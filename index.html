@@ -1,0 +1,2453 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0e27">
+    <meta name="description" content="Affari Tuoi - Gioco ufficiale Edizione 2025-2026. Scegli i pacchi, ricevi offerte dal Dottore e vinci fino a €300.000!">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Affari Tuoi">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <title>Affari Tuoi - Edizione 2025-2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #FFD700;
+            --dark-gold: #B8860B;
+            --red: #DC143C;
+            --dark-red: #8B0000;
+            --blue: #1E3A8A;
+            --dark-blue: #0F172A;
+            --green: #10B981;
+            --orange: #FF6B35;
+            --bg-dark: #0a0e27;
+            --bg-gradient: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-gradient);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('studio-background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        .background-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(220, 20, 60, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(30, 58, 138, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            animation: slideDown 0.8s ease-out;
+            position: relative;
+        }
+        
+        .audio-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .audio-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .audio-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .audio-btn.muted {
+            opacity: 0.5;
+            border-color: #666;
+            color: #666;
+        }
+        
+        h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 50%, var(--red) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            color: var(--gold);
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        
+        /* Schermata iniziale */
+        #welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .welcome-content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.2);
+            max-width: 600px;
+            position: relative;
+        }
+        
+        .welcome-conductor {
+            width: 120px;
+            height: 120px;
+            margin: -60px auto 20px;
+            position: relative;
+        }
+        
+        .welcome-conductor img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 30px rgba(255, 215, 0, 0.5));
+            animation: welcomeBounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes welcomeBounce {
+            0%, 100% {
+                transform: translateY(0px) scale(1);
+            }
+            50% {
+                transform: translateY(-15px) scale(1.05);
+            }
+        }
+        
+        .welcome-content h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--gold);
+        }
+        
+        .welcome-content p {
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, var(--red), var(--dark-red));
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 10px 30px rgba(220, 20, 60, 0.4);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(220, 20, 60, 0.6);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
+        }
+        
+        /* Area di gioco */
+        #game-area {
+            display: none;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        /* Info partita */
+        .game-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid var(--gold);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+        
+        .info-label {
+            font-size: 0.85rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .info-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Oswald', sans-serif;
+            color: white;
+        }
+        
+        .jackpot-card {
+            border-color: var(--orange);
+            background: rgba(255, 107, 53, 0.1);
+        }
+        
+        .jackpot-card .info-label {
+            color: var(--orange);
+        }
+        
+        .jackpot-card .info-value {
+            color: var(--orange);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        /* Tabellone premi */
+        .prize-board {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .prize-board h3 {
+            font-family: 'Oswald', sans-serif;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--gold);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+        
+        .prize-section {
+            margin-bottom: 20px;
+        }
+        
+        .prize-section-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        
+        .blue-section-title {
+            background: linear-gradient(135deg, rgba(30, 136, 229, 0.3), rgba(13, 71, 161, 0.3));
+            color: #90CAF9;
+            border: 2px solid #64B5F6;
+        }
+        
+        .red-section-title {
+            background: linear-gradient(135deg, rgba(220, 20, 60, 0.3), rgba(139, 0, 0, 0.3));
+            color: var(--gold);
+            border: 2px solid var(--gold);
+        }
+        
+        .prizes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+        
+        .prize-item {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(184, 134, 11, 0.2));
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            padding: 15px 10px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .prize-item.blue-prize {
+            background: linear-gradient(135deg, rgba(30, 136, 229, 0.3), rgba(13, 71, 161, 0.3));
+            border-color: #64B5F6;
+            color: #E3F2FD;
+        }
+        
+        .prize-item.red-prize {
+            background: linear-gradient(135deg, rgba(220, 20, 60, 0.3), rgba(139, 0, 0, 0.3));
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        
+        .prize-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .prize-item:hover::before {
+            left: 100%;
+        }
+        
+        .prize-item.eliminated {
+            background: rgba(139, 0, 0, 0.3);
+            border-color: var(--dark-red);
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: line-through;
+            animation: eliminateItem 0.5s ease-out;
+        }
+        
+        .prize-item.black-box {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(50, 50, 50, 0.8));
+            border-color: #666;
+            color: #999;
+        }
+        
+        /* Pacchi */
+        .boxes-section {
+            margin-bottom: 30px;
+        }
+        
+        .boxes-section h3 {
+            font-family: 'Oswald', sans-serif;
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--gold);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+        
+        .boxes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        /* Pacchi - TUTTI ROSSI come in TV (solo il tabellone ha blu/rossi) */
+        .box {
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, var(--red), var(--dark-red));
+            border: 3px solid var(--gold);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .box:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.5);
+            border-color: white;
+        }
+        
+        .box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+        }
+        
+        .box:hover::before {
+            left: 100%;
+        }
+        
+        .box:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.5);
+            border-color: white;
+        }
+        
+        .box.player-box {
+            background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+            border-width: 4px;
+            animation: playerBoxGlow 2s ease-in-out infinite;
+        }
+        
+        .box.opened {
+            background: rgba(50, 50, 50, 0.5);
+            border-color: #666;
+            cursor: not-allowed;
+            transform: scale(0.95);
+            opacity: 0.5;
+        }
+        
+        .box.opened:hover {
+            transform: scale(0.95);
+            box-shadow: none;
+        }
+        
+        .box-number {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .box-region {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            margin-top: 5px;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Messaggi e azioni */
+        .message-box {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid var(--gold);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: messageSlide 0.4s ease-out;
+        }
+        
+        .message-box h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+        
+        .message-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .action-buttons .btn {
+            padding: 15px 35px;
+            font-size: 1rem;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, var(--bg-dark), var(--dark-blue));
+            border: 3px solid var(--gold);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            animation: scaleIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .modal-content h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--gold);
+        }
+        
+        .modal-content .prize-reveal {
+            font-size: 3.5rem;
+            font-weight: 700;
+            font-family: 'Oswald', sans-serif;
+            color: var(--gold);
+            margin: 30px 0;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+            animation: prizeGlow 1.5s ease-in-out infinite;
+        }
+        
+        .gennarino-image {
+            width: 220px;
+            height: 220px;
+            margin: 20px auto;
+            position: relative;
+            animation: gennarinoAppear 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .gennarino-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 40px rgba(255, 215, 0, 0.8));
+            animation: gennarinoWiggle 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes gennarinoAppear {
+            0% {
+                transform: scale(0) rotate(-360deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(20deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes gennarinoWiggle {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+            }
+            25% {
+                transform: rotate(-5deg) scale(1.05);
+            }
+            75% {
+                transform: rotate(5deg) scale(1.05);
+            }
+        }
+        
+        /* Animazioni */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes eliminateItem {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+        
+        @keyframes playerBoxGlow {
+            0%, 100% { box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4); }
+            50% { box-shadow: 0 8px 40px rgba(255, 215, 0, 0.8); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes prizeGlow {
+            0%, 100% { text-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
+            50% { text-shadow: 0 0 50px rgba(255, 215, 0, 1); }
+        }
+        
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Footer creatore */
+        footer {
+            text-align: center;
+            padding: 40px 20px 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        .creator {
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+        
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        footer a:hover {
+            color: white;
+            text-shadow: 0 0 10px var(--gold);
+        }
+        
+        /* Pop-up vittoria finale */
+        .victory-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .victory-popup.active {
+            display: flex;
+        }
+        
+        .victory-content {
+            background: linear-gradient(135deg, var(--bg-dark), var(--dark-blue));
+            border: 4px solid var(--gold);
+            border-radius: 30px;
+            padding: 30px 25px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 100px rgba(255, 215, 0, 0.3);
+            animation: victoryEntrance 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+        }
+        
+        .victory-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .victory-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .victory-content::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+        
+        .victory-content::-webkit-scrollbar-thumb:hover {
+            background: var(--dark-gold);
+        }
+        
+        .victory-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            animation: rotateGlow 10s linear infinite;
+        }
+        
+        .victory-stars {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            animation: starBounce 1s ease-in-out infinite;
+        }
+        
+        .victory-content h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            margin-bottom: 10px;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .victory-subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .victory-amount {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 700;
+            font-family: 'Oswald', sans-serif;
+            color: var(--gold);
+            margin: 20px 0;
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.5);
+            animation: prizeGlowIntense 2s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .victory-details {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .victory-detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+        
+        .victory-detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .victory-detail-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .victory-detail-value {
+            color: var(--gold);
+            font-weight: 700;
+        }
+        
+        .victory-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .victory-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 14px 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .victory-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .victory-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .victory-btn-replay {
+            background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+            color: var(--bg-dark);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+        
+        .victory-btn-replay:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
+        }
+        
+        .victory-btn-close {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .victory-btn-close:hover {
+            transform: translateY(-3px) scale(1.05);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            position: absolute;
+            animation: confettiFall 3s linear infinite;
+        }
+        
+        @keyframes victoryEntrance {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-10deg);
+            }
+            50% {
+                transform: scale(1.1) rotate(5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+        @keyframes starBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.1); }
+        }
+        
+        @keyframes prizeGlowIntense {
+            0%, 100% { 
+                text-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.5);
+                transform: scale(1);
+            }
+            50% { 
+                text-shadow: 0 0 60px rgba(255, 215, 0, 1), 0 0 80px rgba(255, 215, 0, 0.8);
+                transform: scale(1.05);
+            }
+        }
+        
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Pop-up Offerta Dottore */
+        .doctor-offer-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+            z-index: 1500;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        .doctor-offer-popup.active {
+            display: flex;
+        }
+        
+        .doctor-offer-content {
+            background: linear-gradient(135deg, var(--bg-dark), var(--dark-blue));
+            border: 4px solid var(--gold);
+            border-radius: 25px;
+            padding: 25px 20px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 60px rgba(255, 215, 0, 0.4);
+            animation: phoneRing 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+        }
+        
+        .doctor-offer-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .doctor-offer-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .doctor-offer-content::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+        
+        .doctor-offer-content::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--gold), var(--orange), var(--red), var(--gold));
+            border-radius: 25px;
+            z-index: -1;
+            animation: rotateBorder 3s linear infinite;
+        }
+        
+        .doctor-offer-content::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--bg-dark), var(--dark-blue));
+            border-radius: 22px;
+            z-index: -1;
+        }
+        
+        .phone-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            animation: phoneShake 0.5s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        .conductor-image {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
+            position: relative;
+            animation: conductorPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .conductor-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 30px rgba(255, 215, 0, 0.4));
+            animation: conductorFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes conductorPop {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(10deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes conductorFloat {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-10px) rotate(5deg);
+            }
+        }
+        
+        .doctor-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            color: var(--gold);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+        
+        .doctor-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+        
+        .offer-amount-box {
+            background: rgba(255, 215, 0, 0.1);
+            border: 3px solid var(--gold);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            position: relative;
+        }
+        
+        .offer-label {
+            font-size: 0.8rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .offer-amount {
+            font-size: clamp(2rem, 6vw, 3rem);
+            font-weight: 700;
+            font-family: 'Oswald', sans-serif;
+            color: var(--gold);
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            animation: offerPulse 1.5s ease-in-out infinite;
+            display: block;
+        }
+        
+        .offer-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .offer-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .offer-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .offer-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .offer-btn-accept {
+            background: linear-gradient(135deg, var(--green), #059669);
+            color: white;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+        
+        .offer-btn-accept:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.6);
+        }
+        
+        .offer-btn-reject {
+            background: linear-gradient(135deg, var(--red), var(--dark-red));
+            color: white;
+            box-shadow: 0 10px 30px rgba(220, 20, 60, 0.4);
+        }
+        
+        .offer-btn-reject:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(220, 20, 60, 0.6);
+        }
+        
+        .offer-message {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 15px 0;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        @keyframes phoneRing {
+            0% {
+                transform: scale(0.8) rotate(-5deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05) rotate(2deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes phoneShake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+        
+        @keyframes offerPulse {
+            0%, 100% { 
+                transform: scale(1);
+                text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+            50% { 
+                transform: scale(1.08);
+                text-shadow: 0 0 50px rgba(255, 215, 0, 1);
+            }
+        }
+        
+        @keyframes rotateBorder {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 20px 0;
+            }
+            
+            .welcome-content {
+                padding: 30px 20px;
+            }
+            
+            .boxes-grid {
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+                gap: 10px;
+            }
+            
+            .prizes-grid {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            }
+            
+            .btn {
+                padding: 15px 35px;
+                font-size: 1rem;
+            }
+            
+            .modal-content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-pattern"></div>
+    
+    <div class="container">
+        <header>
+            <div class="audio-controls">
+                <button class="audio-btn" id="music-btn" onclick="toggleMusic()" title="Musica">🎵</button>
+                <button class="audio-btn" id="sound-btn" onclick="toggleSound()" title="Suoni">🔊</button>
+            </div>
+            <h1>AFFARI TUOI</h1>
+            <div class="subtitle">Edizione 2025-2026</div>
+        </header>
+        
+        <!-- Schermata di benvenuto -->
+        <div id="welcome-screen">
+            <div class="welcome-content">
+                <div class="welcome-conductor">
+                    <img src="conduttore.png" alt="Conduttore Affari Tuoi">
+                </div>
+                <h2>Benvenuto ad Affari Tuoi!</h2>
+                <p>Hai davanti a te 20 pacchi contenenti premi da 0€ a 300.000€. Il tuo obiettivo è vincere il premio più alto possibile!</p>
+                <p><strong>Come si gioca:</strong> Scegli i pacchi da aprire uno alla volta. Il Dottore ti farà delle offerte: accetta o continua a giocare!</p>
+                <button class="btn" onclick="startGame()">INIZIA A GIOCARE</button>
+            </div>
+        </div>
+        
+        <!-- Area di gioco -->
+        <div id="game-area">
+            <!-- Info partita -->
+            <div class="game-info">
+                <div class="info-card">
+                    <div class="info-label">Pacchi Aperti</div>
+                    <div class="info-value" id="opened-count">0/19</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Fase</div>
+                    <div class="info-value" id="phase-info">1/5</div>
+                </div>
+                <div class="info-card jackpot-card">
+                    <div class="info-label">🎯 Trova Gennarino</div>
+                    <div class="info-value" id="jackpot-value">€1.000</div>
+                </div>
+            </div>
+            
+            <!-- Tabellone premi -->
+            <div class="prize-board">
+                <h3>📊 TABELLONE PREMI</h3>
+                
+                <!-- Premi Blu -->
+                <div class="prize-section">
+                    <div class="prize-section-title blue-section-title">💙 PACCHI BLU (0€ - 500€)</div>
+                    <div class="prizes-grid" id="blue-prizes-grid"></div>
+                </div>
+                
+                <!-- Premi Rossi -->
+                <div class="prize-section">
+                    <div class="prize-section-title red-section-title">❤️ PACCHI ROSSI (5.000€ - 300.000€)</div>
+                    <div class="prizes-grid" id="red-prizes-grid"></div>
+                </div>
+            </div>
+            
+            <!-- Messaggi e offerte -->
+            <div class="message-box" id="message-box">
+                <h3>Seleziona il tuo pacco!</h3>
+                <p class="message-text">Scegli il pacco che vuoi tenere per la partita. Sarà il tuo alleato fino alla fine!</p>
+            </div>
+            
+            <!-- I pacchi -->
+            <div class="boxes-section">
+                <h3>🎁 I PACCHI</h3>
+                <div class="boxes-grid" id="boxes-grid"></div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>🎮 Creato da <span class="creator">Ciro Torelli</span> 🎮</p>
+        <p style="margin-top: 5px; font-size: 0.85rem;">Affari Tuoi - Edizione 2025-2026</p>
+    </footer>
+    
+    <!-- Modal per rivelazioni -->
+    <div class="modal" id="reveal-modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Pacco Aperto!</h2>
+            <div class="prize-reveal" id="modal-prize"></div>
+            <p id="modal-message"></p>
+            <button class="btn btn-secondary" onclick="closeModal()">Continua</button>
+        </div>
+    </div>
+    
+    <!-- Pop-up vittoria finale -->
+    <div class="victory-popup" id="victory-popup">
+        <div class="victory-content">
+            <div class="victory-stars">🏆✨🎉</div>
+            <h2 id="victory-title">Complimenti!</h2>
+            <div class="victory-subtitle" id="victory-subtitle">Hai completato la partita</div>
+            <div class="victory-amount" id="victory-amount">€0</div>
+            <div class="victory-details" id="victory-details"></div>
+            <div class="victory-buttons">
+                <button class="victory-btn victory-btn-replay" onclick="replayFromVictory()">
+                    🔄 GIOCA ANCORA
+                </button>
+                <button class="victory-btn victory-btn-close" onclick="closeVictoryPopup()">
+                    ✕ CHIUDI
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pop-up Offerta Dottore -->
+    <div class="doctor-offer-popup" id="doctor-offer-popup">
+        <div class="doctor-offer-content">
+            <div class="conductor-image">
+                <img src="conduttore.png" alt="Conduttore">
+            </div>
+            <div class="phone-icon">📞</div>
+            <h2 class="doctor-title">Chiamata del Dottore</h2>
+            <p class="doctor-subtitle">"Ho un'offerta per te..."</p>
+            
+            <div class="offer-amount-box">
+                <div class="offer-label">Ti offro</div>
+                <span class="offer-amount" id="doctor-offer-amount">€0</span>
+            </div>
+            
+            <p class="offer-message" id="doctor-offer-message">
+                Vuoi accettare questa offerta in cambio del tuo pacco?
+            </p>
+            
+            <div class="offer-buttons">
+                <button class="offer-btn offer-btn-accept" onclick="acceptOfferFromPopup()">
+                    ✅ ACCETTO!
+                </button>
+                <button class="offer-btn offer-btn-reject" onclick="rejectOfferFromPopup()">
+                    ❌ RIFIUTO
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Sistema Audio con Web Audio API (suoni sintetici)
+        const AudioSystem = {
+            audioContext: null,
+            soundEnabled: true,
+            musicEnabled: true,
+            bgMusicOscillator: null,
+            bgMusicGain: null,
+            
+            init() {
+                // Crea AudioContext al primo click dell'utente
+                this.audioContext = null;
+            },
+            
+            ensureAudioContext() {
+                if (!this.audioContext) {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                return this.audioContext;
+            },
+            
+            playMusic() {
+                if (!this.musicEnabled) return;
+                
+                try {
+                    const ctx = this.ensureAudioContext();
+                    
+                    // Ferma musica precedente
+                    this.stopMusic();
+                    
+                    // Crea un gain per la musica
+                    this.bgMusicGain = ctx.createGain();
+                    this.bgMusicGain.gain.value = 0.08;
+                    this.bgMusicGain.connect(ctx.destination);
+                    
+                    // Flag per sapere se la musica deve continuare
+                    this.musicPlaying = true;
+                    
+                    // Melodia piacevole che si ripete
+                    const melody = [
+                        {freq: 523.25, duration: 0.4}, // C5
+                        {freq: 587.33, duration: 0.4}, // D5
+                        {freq: 659.25, duration: 0.4}, // E5
+                        {freq: 587.33, duration: 0.4}, // D5
+                        {freq: 523.25, duration: 0.4}, // C5
+                        {freq: 659.25, duration: 0.4}, // E5
+                        {freq: 783.99, duration: 0.8}, // G5
+                        {freq: 659.25, duration: 0.4}, // E5
+                        {freq: 587.33, duration: 0.8}, // D5
+                    ];
+                    
+                    let currentNoteIndex = 0;
+                    
+                    const playNextNote = () => {
+                        if (!this.musicEnabled || !this.bgMusicGain || !this.musicPlaying) return;
+                        
+                        const note = melody[currentNoteIndex];
+                        
+                        const osc = ctx.createOscillator();
+                        osc.type = 'sine';
+                        osc.frequency.value = note.freq;
+                        
+                        const noteGain = ctx.createGain();
+                        noteGain.gain.value = 0;
+                        noteGain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.05);
+                        noteGain.gain.linearRampToValueAtTime(0, ctx.currentTime + note.duration);
+                        
+                        osc.connect(noteGain);
+                        noteGain.connect(this.bgMusicGain);
+                        
+                        osc.start(ctx.currentTime);
+                        osc.stop(ctx.currentTime + note.duration);
+                        
+                        currentNoteIndex = (currentNoteIndex + 1) % melody.length;
+                        
+                        // Pianifica la prossima nota
+                        setTimeout(playNextNote, note.duration * 1000);
+                    };
+                    
+                    // Inizia la musica
+                    playNextNote();
+                    
+                } catch (e) {
+                    console.log('Audio non disponibile:', e);
+                }
+            },
+            
+            stopMusic() {
+                this.musicPlaying = false;
+                if (this.bgMusicGain && this.audioContext) {
+                    try {
+                        this.bgMusicGain.disconnect();
+                    } catch(e) {}
+                    this.bgMusicGain = null;
+                }
+            },
+            
+            playSound(soundName) {
+                if (!this.soundEnabled) return;
+                
+                try {
+                    const ctx = this.ensureAudioContext();
+                    
+                    switch(soundName) {
+                        case 'click':
+                            this.playClickSound(ctx);
+                            break;
+                        case 'reveal':
+                            this.playRevealSound(ctx);
+                            break;
+                        case 'win':
+                            this.playWinSound(ctx);
+                            break;
+                        case 'jackpot':
+                            this.playJackpotSound(ctx);
+                            break;
+                        case 'offer':
+                            this.playOfferSound(ctx);
+                            break;
+                        case 'dramatic':
+                            this.playDramaticSound(ctx);
+                            break;
+                    }
+                } catch (e) {
+                    console.log('Audio non disponibile:', e);
+                }
+            },
+            
+            playClickSound(ctx) {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.frequency.value = 800;
+                osc.type = 'sine';
+                
+                gain.gain.value = 0.3;
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.1);
+            },
+            
+            playRevealSound(ctx) {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'triangle';
+                osc.frequency.value = 400;
+                osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.3);
+                
+                gain.gain.value = 0.3;
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.3);
+            },
+            
+            playWinSound(ctx) {
+                // Sequenza di note ascendenti per vittoria
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                
+                notes.forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    
+                    osc.frequency.value = freq;
+                    osc.type = 'sine';
+                    
+                    const startTime = ctx.currentTime + (i * 0.1);
+                    gain.gain.value = 0;
+                    gain.gain.linearRampToValueAtTime(0.4, startTime + 0.01);
+                    gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.3);
+                    
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    
+                    osc.start(startTime);
+                    osc.stop(startTime + 0.3);
+                });
+            },
+            
+            playJackpotSound(ctx) {
+                // Suono esplosivo e festoso
+                for (let i = 0; i < 5; i++) {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    
+                    osc.frequency.value = 800 + (Math.random() * 400);
+                    osc.type = 'sawtooth';
+                    
+                    const startTime = ctx.currentTime + (i * 0.05);
+                    gain.gain.value = 0.2;
+                    gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.2);
+                    
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    
+                    osc.start(startTime);
+                    osc.stop(startTime + 0.2);
+                }
+                
+                // Nota finale alta
+                setTimeout(() => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    
+                    osc.frequency.value = 1200;
+                    osc.type = 'sine';
+                    gain.gain.value = 0.4;
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+                    
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.5);
+                }, 250);
+            },
+            
+            playOfferSound(ctx) {
+                // Suono di telefono più realistico - squillo doppio
+                const playRing = (startTime) => {
+                    // Prima frequenza
+                    const osc1 = ctx.createOscillator();
+                    const gain1 = ctx.createGain();
+                    osc1.frequency.value = 800;
+                    osc1.type = 'sine';
+                    gain1.gain.value = 0.25;
+                    gain1.gain.exponentialRampToValueAtTime(0.01, startTime + 0.15);
+                    osc1.connect(gain1);
+                    gain1.connect(ctx.destination);
+                    osc1.start(startTime);
+                    osc1.stop(startTime + 0.15);
+                    
+                    // Seconda frequenza (sovratono)
+                    const osc2 = ctx.createOscillator();
+                    const gain2 = ctx.createGain();
+                    osc2.frequency.value = 1000;
+                    osc2.type = 'sine';
+                    gain2.gain.value = 0.25;
+                    gain2.gain.exponentialRampToValueAtTime(0.01, startTime + 0.15);
+                    osc2.connect(gain2);
+                    gain2.connect(ctx.destination);
+                    osc2.start(startTime);
+                    osc2.stop(startTime + 0.15);
+                };
+                
+                // Due squilli
+                playRing(ctx.currentTime);
+                playRing(ctx.currentTime + 0.25);
+                playRing(ctx.currentTime + 0.5);
+            },
+            
+            playDramaticSound(ctx) {
+                // Suono drammatico discendente
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'sawtooth';
+                osc.frequency.value = 300;
+                osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.5);
+                
+                gain.gain.value = 0.3;
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.5);
+            },
+            
+            toggleMusic() {
+                this.musicEnabled = !this.musicEnabled;
+                if (this.musicEnabled) {
+                    this.playMusic();
+                } else {
+                    this.stopMusic();
+                }
+                return this.musicEnabled;
+            },
+            
+            toggleSound() {
+                this.soundEnabled = !this.soundEnabled;
+                return this.soundEnabled;
+            }
+        };
+        
+        // Inizializza audio al caricamento
+        window.addEventListener('load', () => {
+            AudioSystem.init();
+        });
+        
+        // Regioni italiane
+        const REGIONS = [
+            'Valle d\'Aosta', 'Piemonte', 'Liguria', 'Lombardia', 'Trentino', 
+            'Veneto', 'Friuli', 'Emilia', 'Toscana', 'Marche', 
+            'Umbria', 'Lazio', 'Abruzzo', 'Molise', 'Campania', 
+            'Puglia', 'Basilicata', 'Calabria', 'Sicilia', 'Sardegna'
+        ];
+        
+        // Premi secondo il regolamento - DIVISI IN BLU E ROSSI
+        const BLUE_PRIZES = [
+            0, 1, 5, 10, 20, 50, 75, 100, 200, 500
+        ];
+        
+        const RED_PRIZES = [
+            5000, 10000, 15000, 20000, 30000, 50000, 75000, 100000, 200000, 300000
+        ];
+        
+        const BASE_PRIZES = [...BLUE_PRIZES, ...RED_PRIZES];
+        
+        // Stato del gioco
+        let gameState = {
+            boxes: [],
+            playerBoxIndex: null,
+            prizes: [],
+            openedBoxes: 0,
+            currentPhase: 1,
+            phases: [6, 3, 3, 3, 3], // Sequenza apertura pacchi
+            phaseBoxesOpened: 0,
+            jackpot: 1000,
+            gennarinoFound: false,
+            gennarinoBox: null,
+            blackBoxIndex: null,
+            blackBoxValue: null,
+            luckyRegion: null,
+            offerCount: 0,
+            hasChangedBox: false
+        };
+        
+        function initGame() {
+            // Genera i 20 pacchi con regioni
+            gameState.boxes = REGIONS.map((region, index) => ({
+                id: index + 1,
+                region: region,
+                opened: false,
+                value: null
+            }));
+            
+            // Assegna i premi ai pacchi (shuffle)
+            let prizes = [...BASE_PRIZES];
+            
+            // Gennarino sostituisce 75€
+            const gennarinoIndex = prizes.indexOf(75);
+            prizes[gennarinoIndex] = 'GENNARINO';
+            
+            // Pacco Nero - sorteggia un valore tra tutti i premi
+            const blackBoxPrizeIndex = Math.floor(Math.random() * BASE_PRIZES.length);
+            gameState.blackBoxValue = BASE_PRIZES[blackBoxPrizeIndex];
+            prizes.push('PACCO_NERO');
+            
+            // Shuffle dei premi
+            prizes = shuffleArray(prizes);
+            
+            // Assegna premi ai pacchi
+            gameState.boxes.forEach((box, index) => {
+                box.value = prizes[index];
+                if (prizes[index] === 'GENNARINO') {
+                    gameState.gennarinoBox = index;
+                }
+                if (prizes[index] === 'PACCO_NERO') {
+                    gameState.blackBoxIndex = index;
+                }
+            });
+            
+            // Estrai la regione fortunata
+            gameState.luckyRegion = REGIONS[Math.floor(Math.random() * REGIONS.length)];
+            
+            // Prepara il tabellone premi (tutti i valori visibili)
+            gameState.prizes = BASE_PRIZES.map(value => ({
+                value: value,
+                eliminated: false
+            }));
+            
+            renderPrizeBoard();
+            renderBoxes();
+            updateGameInfo();
+        }
+        
+        function renderPrizeBoard() {
+            const blueGrid = document.getElementById('blue-prizes-grid');
+            const redGrid = document.getElementById('red-prizes-grid');
+            blueGrid.innerHTML = '';
+            redGrid.innerHTML = '';
+            
+            gameState.prizes.forEach(prize => {
+                const div = document.createElement('div');
+                const isBlue = BLUE_PRIZES.includes(prize.value);
+                const colorClass = isBlue ? 'blue-prize' : 'red-prize';
+                div.className = `prize-item ${colorClass} ${prize.eliminated ? 'eliminated' : ''}`;
+                div.textContent = formatPrize(prize.value);
+                
+                // Aggiungi alla griglia corretta
+                if (isBlue) {
+                    blueGrid.appendChild(div);
+                } else {
+                    redGrid.appendChild(div);
+                }
+            });
+        }
+        
+        function renderBoxes() {
+            const grid = document.getElementById('boxes-grid');
+            grid.innerHTML = '';
+            
+            gameState.boxes.forEach((box, index) => {
+                const div = document.createElement('div');
+                
+                // TUTTI I PACCHI SONO ROSSI (tranne quello del giocatore che è oro)
+                div.className = `box ${box.opened ? 'opened' : ''} ${index === gameState.playerBoxIndex ? 'player-box' : ''}`;
+                div.innerHTML = `
+                    <div class="box-number">${box.id}</div>
+                    <div class="box-region">${box.region}</div>
+                `;
+                
+                if (!box.opened && gameState.playerBoxIndex !== index) {
+                    div.onclick = () => selectBox(index);
+                }
+                
+                grid.appendChild(div);
+            });
+        }
+        
+        function selectBox(index) {
+            const box = gameState.boxes[index];
+            
+            // Se è la selezione del pacco del giocatore
+            if (gameState.playerBoxIndex === null) {
+                AudioSystem.playSound('click');
+                gameState.playerBoxIndex = index;
+                renderBoxes();
+                updateMessage(
+                    'Ottima scelta!',
+                    `Hai scelto il pacco numero ${box.id} della regione ${box.region}. Ora inizia ad aprire gli altri pacchi!`
+                );
+                return;
+            }
+            
+            // Apertura di un pacco
+            if (box.opened || index === gameState.playerBoxIndex) return;
+            
+            // CONTROLLA SE È L'ULTIMO PACCO - NON FARLO APRIRE!
+            const unopenedBoxes = gameState.boxes.filter(b => !b.opened && gameState.boxes.indexOf(b) !== gameState.playerBoxIndex);
+            if (unopenedBoxes.length === 1) {
+                // È l'ultimo pacco! Vai direttamente alla scelta finale
+                AudioSystem.playSound('dramatic');
+                endGameChoice();
+                return;
+            }
+            
+            AudioSystem.playSound('click');
+            openBox(index);
+        }
+        
+        function openBox(index) {
+            const box = gameState.boxes[index];
+            box.opened = true;
+            gameState.openedBoxes++;
+            gameState.phaseBoxesOpened++;
+            
+            const value = box.value;
+            
+            console.log('Pacco aperto:', box.id, 'Valore:', value, 'Tipo:', typeof value);
+            console.log('openedBoxes:', gameState.openedBoxes, 'Condizione Gennarino:', value === 'GENNARINO' && gameState.openedBoxes <= 6);
+            
+            // Elimina il premio dal tabellone
+            if (typeof value === 'number') {
+                const prizeIndex = gameState.prizes.findIndex(p => p.value === value && !p.eliminated);
+                if (prizeIndex !== -1) {
+                    gameState.prizes[prizeIndex].eliminated = true;
+                }
+            }
+            
+            // Controlla Gennarino
+            if (value === 'GENNARINO') {
+                // Gennarino trovato! Controlla se nei primi 6 per il jackpot
+                if (gameState.openedBoxes <= 6) {
+                    gameState.gennarinoFound = true;
+                    AudioSystem.playSound('jackpot');
+                    showRevealModal(
+                        '🎉 HAI TROVATO GENNARINO!',
+                        formatPrize(gameState.jackpot),
+                        `<strong style="color: var(--gold); font-size: 1.2rem;">Complimenti! Hai vinto il jackpot!</strong><br><br>Il premio di ${formatPrize(gameState.jackpot)} si aggiungerà alla tua vincita finale!`,
+                        true  // Mostra Gennarino!
+                    );
+                } else {
+                    // Gennarino trovato troppo tardi - niente jackpot ma mostra comunque l'immagine
+                    AudioSystem.playSound('reveal');
+                    showRevealModal(
+                        '🐕 HAI TROVATO GENNARINO!',
+                        '€0',
+                        `<strong style="color: rgba(255,255,255,0.7); font-size: 1.1rem;">Purtroppo hai trovato Gennarino troppo tardi!</strong><br><br>Il jackpot era disponibile solo nei primi 6 pacchi. Gennarino vale 0€.`,
+                        true  // Mostra comunque Gennarino!
+                    );
+                }
+            } else if (value === 'PACCO_NERO') {
+                AudioSystem.playSound('dramatic');
+                showRevealModal(
+                    '⚫ PACCO NERO!',
+                    formatPrize(gameState.blackBoxValue),
+                    `Il Pacco Nero conteneva ${formatPrize(gameState.blackBoxValue)}. Questo premio è ora eliminato.`
+                );
+                // Elimina il valore dal tabellone
+                const prizeIndex = gameState.prizes.findIndex(p => p.value === gameState.blackBoxValue && !p.eliminated);
+                if (prizeIndex !== -1) {
+                    gameState.prizes[prizeIndex].eliminated = true;
+                }
+            } else {
+                AudioSystem.playSound('reveal');
+                showRevealModal(
+                    `Pacco ${box.id} - ${box.region}`,
+                    typeof value === 'number' ? formatPrize(value) : value,
+                    `Il pacco conteneva ${typeof value === 'number' ? formatPrize(value) : value}.`
+                );
+            }
+            
+            renderBoxes();
+            renderPrizeBoard();
+            updateGameInfo();
+            
+            // Dopo aver chiuso il modal, continua
+            setTimeout(() => {
+                checkPhaseEnd();
+            }, 100);
+        }
+        
+        function checkPhaseEnd() {
+            const phaseLimit = gameState.phases[gameState.currentPhase - 1];
+            
+            if (gameState.phaseBoxesOpened >= phaseLimit) {
+                // Fine fase - offerta del Dottore
+                gameState.phaseBoxesOpened = 0;
+                gameState.currentPhase++;
+                
+                if (gameState.openedBoxes >= 18) {
+                    // Fine gioco - scelta finale
+                    endGameChoice();
+                } else {
+                    makeOffer();
+                }
+            } else {
+                updateMessage(
+                    'Continua ad aprire!',
+                    `Apri ancora ${phaseLimit - gameState.phaseBoxesOpened} pacco/i per questa fase.`
+                );
+            }
+        }
+        
+        function makeOffer() {
+            // Calcola l'offerta del Dottore
+            const remainingPrizes = gameState.prizes
+                .filter(p => !p.eliminated)
+                .map(p => p.value);
+            
+            const average = remainingPrizes.reduce((a, b) => a + b, 0) / remainingPrizes.length;
+            
+            // Il Dottore fa offerte variabili
+            let offer;
+            if (gameState.openedBoxes < 10) {
+                offer = Math.round(average * (0.3 + Math.random() * 0.3));
+            } else if (gameState.openedBoxes < 15) {
+                offer = Math.round(average * (0.5 + Math.random() * 0.3));
+            } else {
+                offer = Math.round(average * (0.7 + Math.random() * 0.2));
+            }
+            
+            // Arrotonda per cifre belle
+            offer = Math.round(offer / 100) * 100;
+            if (offer < 50) offer = 50;
+            
+            gameState.currentOffer = offer;
+            gameState.offerCount++;
+            
+            // Proponi cambio almeno una volta
+            if (!gameState.hasChangedBox && Math.random() > 0.5 && gameState.openedBoxes < 15) {
+                offerBoxChange();
+            } else {
+                showOfferMessage(offer);
+            }
+        }
+        
+        function showOfferMessage(offer) {
+            AudioSystem.playSound('offer');
+            
+            // Mostra il pop-up dedicato
+            const popup = document.getElementById('doctor-offer-popup');
+            const offerAmount = document.getElementById('doctor-offer-amount');
+            const offerMessage = document.getElementById('doctor-offer-message');
+            
+            offerAmount.textContent = formatPrize(offer);
+            
+            // Calcola premi rimasti per dare contesto
+            const remainingPrizes = gameState.prizes.filter(p => !p.eliminated);
+            const highestRemaining = Math.max(...remainingPrizes.map(p => p.value));
+            const lowestRemaining = Math.min(...remainingPrizes.map(p => p.value));
+            
+            let message = `Vuoi accettare questa offerta in cambio del tuo pacco?<br><br>`;
+            message += `<small style="color: rgba(255,255,255,0.6);">`;
+            message += `Premi rimasti: da ${formatPrize(lowestRemaining)} a ${formatPrize(highestRemaining)}`;
+            message += `</small>`;
+            
+            offerMessage.innerHTML = message;
+            
+            // Mostra popup con animazione
+            popup.classList.add('active');
+        }
+        
+        function offerBoxChange() {
+            updateMessage(
+                '🔄 PROPOSTA DI CAMBIO',
+                'Il Dottore ti propone di cambiare il tuo pacco con uno degli altri ancora chiusi!',
+                [
+                    { text: 'VOGLIO CAMBIARE', onclick: 'initiateBoxChange()' },
+                    { text: 'TENGO IL MIO', onclick: 'rejectChange()' }
+                ]
+            );
+        }
+        
+        function initiateBoxChange() {
+            updateMessage(
+                '🔄 SCEGLI IL NUOVO PACCO',
+                'Clicca su uno dei pacchi ancora chiusi per cambiare il tuo!',
+                []
+            );
+            
+            // Abilita selezione cambio
+            const grid = document.getElementById('boxes-grid');
+            const boxes = grid.querySelectorAll('.box');
+            
+            boxes.forEach((div, index) => {
+                if (!gameState.boxes[index].opened && index !== gameState.playerBoxIndex) {
+                    div.style.cursor = 'pointer';
+                    div.onclick = () => executeBoxChange(index);
+                }
+            });
+        }
+        
+        function executeBoxChange(newIndex) {
+            gameState.playerBoxIndex = newIndex;
+            gameState.hasChangedBox = true;
+            renderBoxes();
+            
+            const box = gameState.boxes[newIndex];
+            updateMessage(
+                '✅ CAMBIO EFFETTUATO',
+                `Ora hai il pacco numero ${box.id} della regione ${box.region}!`
+            );
+            
+            setTimeout(() => {
+                const offer = gameState.currentOffer;
+                showOfferMessage(offer);
+            }, 2000);
+        }
+        
+        function rejectChange() {
+            gameState.hasChangedBox = true;
+            // Mostra l'offerta dopo aver rifiutato il cambio
+            setTimeout(() => {
+                const offer = gameState.currentOffer;
+                showOfferMessage(offer);
+            }, 500);
+        }
+        
+        function acceptOffer() {
+            AudioSystem.playSound('win');
+            const offer = gameState.currentOffer;
+            const playerBox = gameState.boxes[gameState.playerBoxIndex];
+            
+            // Rivela tutti i pacchi rimasti
+            gameState.boxes.forEach(box => {
+                if (!box.opened) {
+                    box.opened = true;
+                }
+            });
+            
+            let finalPrize = offer;
+            if (gameState.gennarinoFound) {
+                finalPrize += gameState.jackpot;
+            }
+            
+            renderBoxes();
+            renderPrizeBoard();
+            
+            // Mostra prima il reveal del pacco
+            showRevealModal(
+                '💼 HAI ACCETTATO L\'OFFERTA',
+                formatPrize(offer),
+                `Il tuo pacco conteneva: <strong>${formatPrize(typeof playerBox.value === 'number' ? playerBox.value : (playerBox.value === 'PACCO_NERO' ? gameState.blackBoxValue : 0))}</strong>`
+            );
+            
+            setTimeout(() => {
+                closeModal();
+                showVictoryPopup(finalPrize, offer, playerBox.value, 'accepted');
+            }, 3000);
+        }
+        
+        function acceptOfferFromPopup() {
+            // Chiudi il pop-up offerta
+            document.getElementById('doctor-offer-popup').classList.remove('active');
+            // Esegui l'accettazione
+            acceptOffer();
+        }
+        
+        function rejectOfferFromPopup() {
+            // Chiudi il pop-up offerta
+            document.getElementById('doctor-offer-popup').classList.remove('active');
+            AudioSystem.playSound('click');
+            updateMessage(
+                '💪 HAI RIFIUTATO!',
+                'Bene! Continua ad aprire i pacchi!'
+            );
+            updateGameInfo();
+        }
+        
+        function endGameChoice() {
+            // Rimangono 2 pacchi: quello del giocatore e un altro
+            const remainingBox = gameState.boxes.find(b => !b.opened && b !== gameState.boxes[gameState.playerBoxIndex]);
+            
+            updateMessage(
+                '🎯 SCELTA FINALE',
+                `Sei arrivato alla fine! Rimangono 2 pacchi: il tuo (n.${gameState.boxes[gameState.playerBoxIndex].id}) e il n.${remainingBox.id}. Vuoi tenere il tuo o cambiare?`,
+                [
+                    { text: 'TENGO IL MIO', onclick: 'openFinalBox(false)' },
+                    { text: 'VOGLIO CAMBIARE', onclick: 'openFinalBox(true)' }
+                ]
+            );
+        }
+        
+        function openFinalBox(change) {
+            AudioSystem.playSound('dramatic');
+            if (change) {
+                const remainingBox = gameState.boxes.findIndex(b => !b.opened && b !== gameState.boxes[gameState.playerBoxIndex]);
+                gameState.playerBoxIndex = remainingBox;
+            }
+            
+            const playerBox = gameState.boxes[gameState.playerBoxIndex];
+            let prize = playerBox.value;
+            
+            if (prize === 'PACCO_NERO') {
+                prize = gameState.blackBoxValue;
+            }
+            
+            if (typeof prize === 'number' && prize >= 1 && prize <= 50) {
+                prize = 50; // Premio minimo
+            }
+            
+            let finalPrize = typeof prize === 'number' ? prize : 0;
+            if (gameState.gennarinoFound) {
+                finalPrize += gameState.jackpot;
+            }
+            
+            // Apri tutti i pacchi
+            gameState.boxes.forEach(box => box.opened = true);
+            renderBoxes();
+            
+            AudioSystem.playSound('win');
+            
+            // Mostra prima il reveal
+            showRevealModal(
+                '🎁 IL TUO PACCO!',
+                formatPrize(prize),
+                `${change ? 'Hai cambiato pacco! ' : ''}Il tuo pacco conteneva: <strong>${formatPrize(prize)}</strong>`
+            );
+            
+            setTimeout(() => {
+                closeModal();
+                showVictoryPopup(finalPrize, prize, playerBox.value, 'final');
+            }, 3000);
+        }
+        
+        function showEndGameOptions() {
+            updateMessage(
+                '🎮 PARTITA CONCLUSA',
+                'Grazie per aver giocato ad Affari Tuoi!',
+                [
+                    { text: '🔄 GIOCA ANCORA', onclick: 'restartGame()', class: 'btn-secondary' }
+                ]
+            );
+        }
+        
+        function showVictoryPopup(finalPrize, basePrize, originalValue, type) {
+            const popup = document.getElementById('victory-popup');
+            const title = document.getElementById('victory-title');
+            const subtitle = document.getElementById('victory-subtitle');
+            const amount = document.getElementById('victory-amount');
+            const details = document.getElementById('victory-details');
+            
+            // Titolo in base al risultato
+            if (finalPrize >= 100000) {
+                title.textContent = '🏆 VINCITA STRAORDINARIA! 🏆';
+                subtitle.textContent = 'Hai vinto una cifra incredibile!';
+            } else if (finalPrize >= 50000) {
+                title.textContent = '🌟 GRANDE VINCITA! 🌟';
+                subtitle.textContent = 'Complimenti per questo risultato!';
+            } else if (finalPrize >= 10000) {
+                title.textContent = '🎉 OTTIMA VINCITA! 🎉';
+                subtitle.textContent = 'Ben giocato!';
+            } else if (finalPrize > 0) {
+                title.textContent = '✨ COMPLIMENTI! ✨';
+                subtitle.textContent = 'Hai completato la partita!';
+            } else {
+                title.textContent = '💪 PARTITA CONCLUSA';
+                subtitle.textContent = 'Grazie per aver giocato!';
+            }
+            
+            amount.textContent = formatPrize(finalPrize);
+            
+            // Dettagli
+            let detailsHtml = '';
+            
+            if (type === 'accepted') {
+                detailsHtml += `
+                    <div class="victory-detail-item">
+                        <span class="victory-detail-label">Offerta Accettata:</span>
+                        <span class="victory-detail-value">${formatPrize(basePrize)}</span>
+                    </div>
+                `;
+            } else {
+                detailsHtml += `
+                    <div class="victory-detail-item">
+                        <span class="victory-detail-label">Premio nel Pacco:</span>
+                        <span class="victory-detail-value">${formatPrize(basePrize)}</span>
+                    </div>
+                `;
+            }
+            
+            if (gameState.gennarinoFound) {
+                detailsHtml += `
+                    <div class="victory-detail-item">
+                        <span class="victory-detail-label">🎯 Jackpot Gennarino:</span>
+                        <span class="victory-detail-value">${formatPrize(gameState.jackpot)}</span>
+                    </div>
+                `;
+            }
+            
+            detailsHtml += `
+                <div class="victory-detail-item">
+                    <span class="victory-detail-label">Pacchi Aperti:</span>
+                    <span class="victory-detail-value">${gameState.openedBoxes}/19</span>
+                </div>
+                <div class="victory-detail-item">
+                    <span class="victory-detail-label">Offerte Ricevute:</span>
+                    <span class="victory-detail-value">${gameState.offerCount}</span>
+                </div>
+            `;
+            
+            details.innerHTML = detailsHtml;
+            
+            // Mostra popup con animazione
+            setTimeout(() => {
+                popup.classList.add('active');
+                createConfetti();
+            }, 200);
+        }
+        
+        function closeVictoryPopup() {
+            document.getElementById('victory-popup').classList.remove('active');
+        }
+        
+        function replayFromVictory() {
+            closeVictoryPopup();
+            AudioSystem.playSound('click');
+            setTimeout(() => {
+                restartGame();
+            }, 300);
+        }
+        
+        function createConfetti() {
+            const popup = document.querySelector('.victory-content');
+            const colors = ['#FFD700', '#FF6B35', '#DC143C', '#1E3A8A', '#10B981'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                popup.appendChild(confetti);
+                
+                // Rimuovi dopo l'animazione
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+        
+        function updateMessage(title, text, buttons = []) {
+            const messageBox = document.getElementById('message-box');
+            
+            let buttonsHtml = '';
+            if (buttons.length > 0) {
+                buttonsHtml = '<div class="action-buttons">';
+                buttons.forEach(btn => {
+                    buttonsHtml += `<button class="btn ${btn.class || ''}" onclick="${btn.onclick}">${btn.text}</button>`;
+                });
+                buttonsHtml += '</div>';
+            }
+            
+            messageBox.innerHTML = `
+                <h3>${title}</h3>
+                <p class="message-text">${text}</p>
+                ${buttonsHtml}
+            `;
+        }
+        
+        function updateGameInfo() {
+            document.getElementById('opened-count').textContent = `${gameState.openedBoxes}/19`;
+            document.getElementById('phase-info').textContent = `${gameState.currentPhase}/5`;
+            document.getElementById('jackpot-value').textContent = formatPrize(gameState.jackpot);
+        }
+        
+        function showRevealModal(title, prize, message, showGennarino = false) {
+            console.log('showRevealModal chiamata, showGennarino:', showGennarino);
+            const modal = document.getElementById('reveal-modal');
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-prize').textContent = prize;
+            
+            // Aggiungi immagine Gennarino se necessario
+            if (showGennarino) {
+                console.log('Aggiungendo immagine Gennarino');
+                // Cache busting per forzare il caricamento
+                const timestamp = new Date().getTime();
+                const gennarinoHtml = `<div class="gennarino-image"><img src="gennarino.png?v=${timestamp}" alt="Gennarino" onerror="console.error('Gennarino non caricato')"></div>`;
+                document.getElementById('modal-message').innerHTML = message + gennarinoHtml;
+            } else {
+                document.getElementById('modal-message').innerHTML = message;
+            }
+            
+            modal.classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('reveal-modal').classList.remove('active');
+        }
+        
+        function formatPrize(value) {
+            if (typeof value === 'string') return value;
+            if (value === 0) return '0€';
+            if (value < 1000) return `€${value}`;
+            return `€${value.toLocaleString('it-IT')}`;
+        }
+        
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+        
+        function startGame() {
+            AudioSystem.playMusic();
+            AudioSystem.playSound('dramatic');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('game-area').style.display = 'block';
+            initGame();
+        }
+        
+        function restartGame() {
+            AudioSystem.playSound('click');
+            gameState = {
+                boxes: [],
+                playerBoxIndex: null,
+                prizes: [],
+                openedBoxes: 0,
+                currentPhase: 1,
+                phases: [6, 3, 3, 3, 3],
+                phaseBoxesOpened: 0,
+                jackpot: 1000,
+                gennarinoFound: false,
+                gennarinoBox: null,
+                blackBoxIndex: null,
+                blackBoxValue: null,
+                luckyRegion: null,
+                offerCount: 0,
+                hasChangedBox: false
+            };
+            initGame();
+            updateMessage(
+                'Seleziona il tuo pacco!',
+                'Scegli il pacco che vuoi tenere per la partita. Sarà il tuo alleato fino alla fine!'
+            );
+        }
+        
+        function toggleMusic() {
+            const enabled = AudioSystem.toggleMusic();
+            const btn = document.getElementById('music-btn');
+            if (enabled) {
+                btn.classList.remove('muted');
+                btn.textContent = '🎵';
+            } else {
+                btn.classList.add('muted');
+                btn.textContent = '🔇';
+            }
+        }
+        
+        function toggleSound() {
+            const enabled = AudioSystem.toggleSound();
+            const btn = document.getElementById('sound-btn');
+            if (enabled) {
+                btn.classList.remove('muted');
+                btn.textContent = '🔊';
+            } else {
+                btn.classList.add('muted');
+                btn.textContent = '🔇';
+            }
+        }
+        
+        // Registra Service Worker per PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => console.log('Service Worker registrato'))
+                    .catch(error => console.log('Service Worker non registrato:', error));
+            });
+        }
+    </script>
+</body>
+</html>
